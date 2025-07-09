@@ -461,6 +461,10 @@ body {
   background: url("../images/Contact/Contact-Hero.jpg") center / cover no-repeat;
 }
 
+.main_timer {
+  background: url("../images/Home/Home-Hero.jpg") center / cover no-repeat;
+}
+
 .contact__container {
   display: flex;
   justify-content: space-between;

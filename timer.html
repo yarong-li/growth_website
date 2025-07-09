@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <title>Timer - Growth Websites</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .timer-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timer-display {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #303a4d;
+      margin: 2rem 0;
+      font-family: monospace;
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 2px solid #e1e4eb;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .timer-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+    
+    .timer-btn.primary {
+      background: #303a4d;
+      color: white;
+    }
+    
+    .timer-btn.secondary {
+      background: #e1e4eb;
+      color: #303a4d;
+      border: 2px solid #303a4d;
+    }
+    
+    .timer-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .time-input {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .time-input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .time-input-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #303a4d;
+    }
+    
+    .time-input-group input {
+      width: 80px;
+      padding: 0.5rem;
+      border: 2px solid #e1e4eb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .time-input-group input:focus {
+      outline: none;
+      border-color: #303a4d;
+    }
+    
+    .preset-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .preset-btn {
+      padding: 0.5rem 1rem;
+      border: 2px solid #303a4d;
+      background: transparent;
+      color: #303a4d;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+    }
+    
+    .preset-btn:hover {
+      background: #303a4d;
+      color: white;
+    }
+    
+    .timer-status {
+      margin: 1rem 0;
+      font-weight: 600;
+      color: #303a4d;
+    }
+    
+    @media (max-width: 768px) {
+      .timer-display {
+        font-size: 2.5rem;
+      }
+      
+      .timer-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .time-input {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">Growth Websites</a>
+        <div class="header__navigation">
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <nav class="menu__body">
+                <ul class="menu__list">
+                  <li class="menu__item"><a href="index.html" class="menu__link">Home</a></li>
+                  <li class="menu__item"><a href="timer.html" class="menu__link">Timer</a></li>
+                </ul>
+                <a href="#" class="actions-header__button">Start Building</a>
+              </nav>
+          </div>
+          <div class="header__actions actions-header">
+            <button type="button" class="menu__icon icon-menu"><span></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="page">
+      <section class="page__main main main_timer main_pages">
+        <div class="main__container main__container_pages">
+          <h1 class="main__title">Custom Timer</h1>
+          <div class="main__text main__text_pages">
+            Set your own time intervals and stay focused on your goals with our customizable countdown timer.
+          </div>
+        </div>
+      </section>
+      <section class="page__timer timer">
+        <div class="timer__container">
+          <div class="timer-container">
+            <h2 class="timer__title title">Focus Timer</h2>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-status" id="timer-status">Ready to start</div>
+            
+            <div class="time-input">
+              <div class="time-input-group">
+                <label for="hours">Hours</label>
+                <input type="number" id="hours" min="0" max="99" value="0">
+              </div>
+              <div class="time-input-group">
+                <label for="minutes">Minutes</label>
+                <input type="number" id="minutes" min="0" max="59" value="25">
+              </div>
+              <div class="time-input-group">
+                <label for="seconds">Seconds</label>
+                <input type="number" id="seconds" min="0" max="59" value="0">
+              </div>
+            </div>
+            
+            <div class="preset-buttons">
+              <button class="preset-btn" onclick="setPresetTime(5, 0, 0)">5 min</button>
+              <button class="preset-btn" onclick="setPresetTime(15, 0, 0)">15 min</button>
+              <button class="preset-btn" onclick="setPresetTime(25, 0, 0)">25 min</button>
+              <button class="preset-btn" onclick="setPresetTime(45, 0, 0)">45 min</button>
+              <button class="preset-btn" onclick="setPresetTime(1, 0, 0)">1 hour</button>
+            </div>
+            
+            <div class="timer-controls">
+              <button class="timer-btn primary" id="start-btn" onclick="startTimer()">Start Timer</button>
+              <button class="timer-btn secondary" id="pause-btn" onclick="pauseTimer()" style="display: none;">Pause</button>
+              <button class="timer-btn secondary" id="reset-btn" onclick="resetTimer()">Reset</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page__outro outro outro_timer">
+        <div class="outro__container">
+          <h2 class="outro__title title">Ready to Focus?</h2>
+          <div class="outro__text">
+            Use this timer to stay focused on your tasks and build productive habits. Set custom intervals that work for your unique workflow and goals.
+          </div>
+          <a href="#" class="outro__button button">Start Building Habits</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms & Conditions</a>
+        <a href="" class="footer__logo logo">Growth Websites</a>
+        <div class="footer__copyright">Copyright © 2025 Growth Websites – All Rights Reserved</div>
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    let timer;
+    let timeLeft = 1500; // 25 minutes in seconds
+    let isRunning = false;
+    let isPaused = false;
+    let originalTime = 1500;
+
+    function updateDisplay() {
+      const hours = Math.floor(timeLeft / 3600);
+      const minutes = Math.floor((timeLeft % 3600) / 60);
+      const seconds = timeLeft % 60;
+      
+      document.getElementById('timer-display').textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (!isRunning) {
+        isRunning = true;
+        isPaused = false;
+        document.getElementById('start-btn').style.display = 'none';
+        document.getElementById('pause-btn').style.display = 'inline-block';
+        document.getElementById('timer-status').textContent = 'Timer running...';
+        
+        timer = setInterval(() => {
+          timeLeft--;
+          updateDisplay();
+          
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            isRunning = false;
+            document.getElementById('timer-status').textContent = 'Time\'s up!';
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('pause-btn').style.display = 'none';
+            
+            // Play notification sound or show alert
+            if (Notification.permission === 'granted') {
+              new Notification('Timer Complete!', {
+                body: 'Your timer has finished. Great job staying focused!',
+                icon: '/img/favicon.png'
+              });
+            } else {
+              alert('Timer complete! Great job staying focused!');
+            }
+          }
+        }, 1000);
+      }
+    }
+
+    function pauseTimer() {
+      if (isRunning) {
+        clearInterval(timer);
+        isRunning = false;
+        isPaused = true;
+        document.getElementById('start-btn').style.display = 'inline-block';
+        document.getElementById('pause-btn').style.display = 'none';
+        document.getElementById('timer-status').textContent = 'Timer paused';
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      isRunning = false;
+      isPaused = false;
+      timeLeft = originalTime;
+      updateDisplay();
+      document.getElementById('start-btn').style.display = 'inline-block';
+      document.getElementById('pause-btn').style.display = 'none';
+      document.getElementById('timer-status').textContent = 'Ready to start';
+    }
+
+    function setPresetTime(hours, minutes, seconds) {
+      timeLeft = hours * 3600 + minutes * 60 + seconds;
+      originalTime = timeLeft;
+      updateDisplay();
+      resetTimer();
+    }
+
+    function updateTimeFromInputs() {
+      const hours = parseInt(document.getElementById('hours').value) || 0;
+      const minutes = parseInt(document.getElementById('minutes').value) || 0;
+      const seconds = parseInt(document.getElementById('seconds').value) || 0;
+      
+      timeLeft = hours * 3600 + minutes * 60 + seconds;
+      originalTime = timeLeft;
+      updateDisplay();
+      resetTimer();
+    }
+
+    // Add event listeners for input changes
+    document.getElementById('hours').addEventListener('change', updateTimeFromInputs);
+    document.getElementById('minutes').addEventListener('change', updateTimeFromInputs);
+    document.getElementById('seconds').addEventListener('change', updateTimeFromInputs);
+
+    // Request notification permission
+    if ('Notification' in window) {
+      Notification.requestPermission();
+    }
+
+    // Initialize display
+    updateDisplay();
+  </script>
+  <script src="js/script.js"></script>
+</body>
+
+</html> 
